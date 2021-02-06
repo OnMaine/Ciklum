@@ -1,3 +1,4 @@
+//create matrix
 function matrixArray(rows,columns){
   let arr = [];
   for(let i=0; i<rows; i++){
@@ -12,8 +13,8 @@ function matrixArray(rows,columns){
 let x = 0;
 let y = 0;
 let myMatrix = matrixArray(9,5);
-// let event = {};
-// let allEvents = [];
+let someEvent = {};
+let allEvents = [];
 
 
 function getDay() {
@@ -35,31 +36,34 @@ function getCoordinate() {
   return;
 }
 
-
+//add event to matrix func
 function addEvents(x, y) {
   eventName  = document.getElementById("newEvent").value;
-  // console.log(event);
   for (let i = 0; i < myMatrix.length; i++) {
       for(let j=0; j<myMatrix[i].length; j++){
       if (x == j && y == i && myMatrix[i][j] == '') {
-        myMatrix[i][j] = eventName;
-        // allEvents.push(event);
+        someEvent = {membersInvited, eventName}
+        allEvents.push(someEvent);
+        myMatrix[i][j] = someEvent; // someEvent.eventName
+        someEvent = {};
         // console.log(allEvents);
+        // console.log(myMatrix[i][j]);
       }
     }
   }
   updateTable();
 // location.href="index.html";
 }
-
+// вставка значений в таблицу на вкладке создания ивента // удалить и віводить строить таблицу с массива myMatrix
 function updateTable() {
   let userTable = document.querySelector('table');
-  for(let i = 0; i < userTable.rows.length; i++){
-      for(let j = 0; j < userTable.rows[i].cells.length; j++)
-          userTable.rows[i].cells[j].innerText = myMatrix[i][j];
+  for (let i = 0; i < userTable.rows.length; i++) {
+    for (let j = 0; j < userTable.rows[i].cells.length; j++)
+      if (i == y && j == x) {
+        userTable.rows[i].cells[j].innerHTML = eventName;
+      }
   }
 }
-
 
 //checkbox multiselect
 let expanded = false;
@@ -77,10 +81,11 @@ function showCheckboxes() {
 
 
 //checkbox Value + write placeholder func
+let membersInvited;
 function getCheckedCheckBoxes() {
   let selectedCheckBoxes = document.querySelectorAll('input.checkbox:checked');
   let checkedValues = Array.from(selectedCheckBoxes).map(cb => cb.value);
-  let membersInvited = checkedValues;
+  membersInvited = checkedValues;
   let members = document.getElementById("members");
   members.innerText = membersInvited;
   return checkedValues;
