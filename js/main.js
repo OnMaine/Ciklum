@@ -139,6 +139,7 @@ createEventBtn.addEventListener("click", function() {
   validateCheckBox();
   if (validated) {
     addEvents(x, y);
+    PopUpHide();
   }
 });
 
@@ -174,9 +175,24 @@ function filterTable() {
                 }
             }
           };
+          updateTableFiltered();
         }
       }
-                updateTableFiltered();
     }
   }
 };
+
+
+// popUp slide
+let popUp = document.getElementById("popUp");
+$(document).ready(function(){
+    PopUpHide();
+});
+
+function PopUpShow(){
+    popUp.style.display = "block";
+}
+
+function PopUpHide(){
+    popUp.style.display = "none";
+}
