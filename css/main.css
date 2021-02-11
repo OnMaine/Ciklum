@@ -32,3 +32,15 @@
 label input {
   margin: 5px;
 }
+
+
+tr td {
+  width: 20%;
+  max-width: 20%;
+}
+
+.events {
+  background-color: rgb(42, 143, 134);
+  width: 100%;
+  height: 100%;
+}

@@ -5,6 +5,10 @@ let someEvent = {};
 let membersInvited;
 let storageEvents = [];
 let isUniq = false;
+let expanded = false;
+let isEmpty;
+let filterMember ="all";
+let filteredEvents = [];
 
 function getDay() {
   let select = document.getElementById("days");
@@ -24,6 +28,7 @@ function getName() {
   return eventName;
 };
 
+// create new Event . Push to DB, serch from DB ect.
 function createEvent() {
   getCheckedCheckBoxes();
   someEvent = {
@@ -34,9 +39,12 @@ function createEvent() {
   };
   let storageBD = JSON.parse(localStorage.getItem('allEvents'));
   if (storageBD == null) {
+  	isEmpty = true;
+  	let storageEvents = [];
     storageEvents.push(someEvent);
     localStorage.setItem('allEvents', JSON.stringify(storageEvents));
   } else {
+  	isEmpty = false;
     storageEvents = JSON.parse(localStorage.getItem('allEvents'));
     let check = storageEvents.some(function(elem) {
       if (elem.day == someEvent.day && elem.time == someEvent.time) {
@@ -53,24 +61,69 @@ function createEvent() {
       localStorage.setItem('allEvents', JSON.stringify(storageEvents));
     }
   }
-}
+};
 
-window.onload = function updateTable() {
+
+// upload data with all events to table 
+
+const updateTable = function updateTable() {
   storageEvents = JSON.parse(localStorage.getItem('allEvents'));
   let userTable = document.querySelector('table');
-  for (let i = 0; i < userTable.rows.length; i++) {
-    for (let j = 0; j < userTable.rows[i].cells.length; j++)
-    storageEvents.forEach(event => {
-      if (i == event.time && j == event.day) {
-        userTable.rows[i].cells[j].innerHTML = event.eventName;
+  if (storageEvents) {
+    for (let i = 0; i < userTable.rows.length; i++) {
+      for (let j = 0; j < userTable.rows[i].cells.length; j++)
+      storageEvents.forEach(event => {
+        if (i == event.time && j == event.day) {
+          userTable.rows[i].cells[j].innerHTML = `<div class="events">  ${event.eventName} </div>`;
+        }
+      });
+    }
+  }
+};
+window.onload = updateTable;
+//get select filter value
+function getMembersFilter() {
+  let select = document.getElementById("membersFilters");
+  filterMember = select.options[select.selectedIndex].value;
+  filteredEvents = [];
+  if (filterMember == "all") {
+    updateTable();
+  } else {
+    filteredTable();
+  }
+  return filterMember;
+};
+
+//update filtered table
+function filteredTable() {
+  function isRightMember(elem) {
+    let eventMembers = elem.members;
+    let checked = eventMembers.some(function(member) {
+      if (member == filterMember) {
+        return true;
+      } else {
+        return false;
       }
     });
+    if (checked) {
+      filteredEvents.push(elem);
+    } 
+  }
+  storageEvents.filter(isRightMember);
+  let userTable = document.querySelector('table');
+  for (let i = 0; i < userTable.rows.length; i++) {
+    for (let j = 0; j < userTable.rows[i].cells.length; j++) {
+      userTable.rows[i].cells[j].innerHTML = '';
+      filteredEvents.forEach(event => {
+        if (i == event.time && j == event.day) {
+          userTable.rows[i].cells[j].innerHTML = `<div class="events">  ${event.eventName} </div>`;
+        }
+      });
+    }
   }
 };
 
 //checkbox multiselect
-let expanded = false;
-
 function showCheckboxes() {
   let checkboxes = document.getElementById("checkboxes");
   if (!expanded) {
@@ -130,17 +183,16 @@ function inputsValidate() {
   return inputsValid;
 };
 
-
-
-//add Event to table
+//add Event to table on click
 let createEventBtn = document.getElementById("createEventBtn");
 createEventBtn.addEventListener("click", function(e) {
   e.preventDefault();
   inputsValidate();
   if (inputsValid) {
     createEvent();
-    if (isUniq) {
+    if (isUniq || isEmpty) {
       location.href="index.html";
     }
   }
 });
+
