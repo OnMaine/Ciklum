@@ -3,11 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="stylesheet" href="css/main.css">
-  <title>ZX</title>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
       </div>
       <div class="col-6 d-flex flex-row justify-content-end">
         <div class="members col-6">
-          <select class="form-control" id="membersFilter" onchange="filterTable();">
+          <select class="form-control" id="membersFilter">
             <option value="all">All members</option>
             <option value="Mark">Mark</option>
             <option value="Andy">Andy</option>
@@ -26,7 +26,7 @@
             <option value="Jastin">Jastin</option>
           </select>
         </div>
-        <div class="newEvent col-6"><button type="button" class="btn btn-primary w-100" onClick='PopUpShow();'>New Event +</button></div>
+        <div class="newEvent col-6"><button type="button" class="btn btn-primary w-100" onClick='location.href="create.html"'>New Event +</button></div>
       </div>
     </div>
     <div class="row">
@@ -211,185 +211,10 @@
     </div>
   </div>
 
-  <div id="popUp">
-    <div class="container">
-      <div class="row pt-5">
-        <div class="col-8">
-          <form id="myForm" onsubmit="return false">
-            <div class="form-group row">
-              <label for="NameEvent" class="col-sm-5 col-form-label">Name of the event:</label>
-              <div class="col-sm-6">
-                <input id="newEvent" type="text" class="form-control" value="" placeholder="Your event" required>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="members" class="col-sm-5 col-form-label">Participants:</label>
-              <div class="col-sm-6">
-                <form>
-                  <div class="multiselect">
-                    <div class="selectBox" onclick="showCheckboxes()">
-                      <select class="form-control">
-                        <option id="members">Select an option</option>
-                      </select>
-                      <div class="overSelect"></div>
-                    </div>
-                    <div id="checkboxes">
-                      <label for="allChecked">
-                        <input type="checkbox" name="checkbox" value="All" id="allChecked" />All</label>
-                      <label for="Mark">
-                        <input class="checkbox" name="checkbox" type="checkbox" value="Mark" id="Mark" />Mark</label>
-                      <label for="Andy">
-                        <input class="checkbox" name="checkbox" type="checkbox" value="Andy" id="Andy" />Andy</label>
-                      <label for="Sarah">
-                        <input class="checkbox" name="checkbox" type="checkbox" value="Sarah" id="Sarah" />Sarah</label>
-                      <label for="Jastin">
-                        <input class="checkbox" name="checkbox" type="checkbox" value="Jastin" id="Jastin" />Jastin</label>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="days" class="col-sm-5 col-form-label">Days:</label>
-              <div class="col-sm-6">
-                <select class="form-control days" id="days" onchange="getCoordinate();">
-                  <option value="0">monday</option>
-                  <option value="1">tuesday</option>
-                  <option value="2">wednesday</option>
-                  <option value="3">thursday</option>
-                  <option value="4">friday</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="time" class="col-sm-5 col-form-label">Time:</label>
-              <div class="col-sm-6">
-                <select class="form-control days" id="time" onchange="getCoordinate();">
-                  <option value="0">10:00</option>
-                  <option value="1">11:00</option>
-                  <option value="2">12:00</option>
-                  <option value="3">13:00</option>
-                  <option value="4">14:00</option>
-                  <option value="5">15:00</option>
-                  <option value="6">16:00</option>
-                  <option value="7">17:00</option>
-                  <option value="8">18:00</option>
-                </select>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row d-flex justify-content-end">
-        <div class="col-4 d-flex">
-          <div class="col-6">
-            <div><button type="button" class="btn btn-primary w-100" onClick='PopUpHide()'>Cancel</button></div>
-          </div>
-          <div class="col-6">
-            <div class="newEvent"><button id="createEventBtn" type="submit" form="myForm" class="btn btn-primary w-100">Create</button></div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="row py-3">
-      <div class="col-12">
-        <div class="day-box d-flex flex-row w-100">
-          <div class="d-flex flex-column justify-content-start align-items-center text-white bg-dark pt-1">
-            <div class="time-row">Name</div>
-            <div class="time-row">10:00</div>
-            <div class="time-row">11:00</div>
-            <div class="time-row">12:00</div>
-            <div class="time-row">13:00</div>
-            <div class="time-row">14:00</div>
-            <div class="time-row">15:00</div>
-            <div class="time-row">16:00</div>
-            <div class="time-row">17:00</div>
-            <div class="time-row">18:00</div>
-          </div>
-          <div class="d-flex flex-column w-100">
-            <div class="d-flex text-center text-white bg-dark py-1 w-100">
-                <div class="col">Mon</div>
-                <div class="col">Tue</div>
-                <div class="col">Wed</div>
-                <div class="col">Thu</div>
-                <div class="col">Fri</div>
-            </div>
-            <table class="table m-0 table-bordered">
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    </div>
-  </div>
-
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="js/main.js"></script>
+<!--   <script type="text/javascript" src="js/main.js"></script> -->
+  <script type="text/javascript" src="js/local.js"></script>
 </body>
 
 </html>
