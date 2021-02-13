@@ -1,5 +1,5 @@
-let x = 0;
-let y = 0;
+let x = 1;
+let y = 1;
 let eventName = '';
 let someEvent = {};
 let membersInvited;
@@ -54,7 +54,9 @@ function createEvent() {
       }
     });
     if (check) {
-      console.log("Занято");
+      formAlert.style.display = "none";
+      timeAlert.style.display = "block";
+      showAlert();
     } else {
       isUniq = true;
       storageEvents.push(someEvent);
@@ -63,24 +65,33 @@ function createEvent() {
   }
 };
 
-
 // upload data with all events to table 
+let userTable = document.querySelector('table');
 
 const updateTable = function updateTable() {
   storageEvents = JSON.parse(localStorage.getItem('allEvents'));
-  let userTable = document.querySelector('table');
   if (storageEvents) {
-    for (let i = 0; i < userTable.rows.length; i++) {
-      for (let j = 0; j < userTable.rows[i].cells.length; j++)
+    for (let i = 1; i < userTable.rows.length; i++) {
+      for (let j = 1; j < userTable.rows[i].cells.length; j++)
       storageEvents.forEach(event => {
         if (i == event.time && j == event.day) {
-          userTable.rows[i].cells[j].innerHTML = `<div class="events">  ${event.eventName} </div>`;
+          let tableEvent = userTable.rows[i].cells[j];
+          tableEvent.id = "tableEvent";
+          let content = `<div class="events">
+          <div class="eventName"> ${event.eventName} </div>
+          <button id="closeBtn" type="button" class="close closeBtn" aria-label="Close">
+          <span aria-hidden="true" class="close closeBtn">&times;</span>
+          </button>
+         </div>`;
+         tableEvent.innerHTML = content;
         }
       });
     }
   }
 };
+
 window.onload = updateTable;
+
 //get select filter value
 function getMembersFilter() {
   let select = document.getElementById("membersFilters");
@@ -110,13 +121,21 @@ function filteredTable() {
     } 
   }
   storageEvents.filter(isRightMember);
-  let userTable = document.querySelector('table');
-  for (let i = 0; i < userTable.rows.length; i++) {
-    for (let j = 0; j < userTable.rows[i].cells.length; j++) {
+  for (let i = 1; i < userTable.rows.length; i++) {
+    for (let j = 1; j < userTable.rows[i].cells.length; j++) {
+      let tableEvent = userTable.rows[i].cells[j];
+      tableEvent.removeAttribute('id');
       userTable.rows[i].cells[j].innerHTML = '';
       filteredEvents.forEach(event => {
         if (i == event.time && j == event.day) {
-          userTable.rows[i].cells[j].innerHTML = `<div class="events">  ${event.eventName} </div>`;
+          tableEvent.id = "tableEvent";
+          let content = `<div class="events">
+          <div class="eventName"> ${event.eventName} </div>
+          <button id="closeBtn" type="button" class="close closeBtn" aria-label="Close">
+          <span aria-hidden="true" class="close closeBtn">&times;</span>
+          </button>
+         </div>`;
+          userTable.rows[i].cells[j].innerHTML = content;
         }
       });
     }
@@ -155,19 +174,21 @@ function toggle(source) {
 
 //listener for checkboxes
 let check = document.querySelectorAll('.checkbox');
-check.forEach(function(i) {
-  i.addEventListener('click', function() {
+check.forEach(function(items) {
+  items.addEventListener('click', function() {
     getCheckedCheckBoxes();
   });
 });
 
 // listener for selectAll
 let btnCheckAll = document.getElementById("allChecked");
-btnCheckAll.addEventListener("click", function() {
-  toggle(this);
-  getCheckedCheckBoxes();
-});
-
+if (window.location.pathname == "/create.html") {
+  btnCheckAll.addEventListener("click", function() {
+    toggle(btnCheckAll);
+    getCheckedCheckBoxes();
+  });
+  console.log(window.location.pathname);
+}
 
 //validate checkboxes
 let validated = false;
@@ -177,22 +198,80 @@ function inputsValidate() {
   if (a && eventName.trim() !== '') {
     inputsValid = true;
   } else {
-    alert("Заполните все поля и выберите хотя бы один чекбокс!");
+    timeAlert.style.display = "none";
+    formAlert.style.display = "block";
+    showAlert();
     inputsValid = false;
   }
   return inputsValid;
 };
 
+let alertMassage = document.getElementById("alertMassage");
+let timeAlert = document.getElementById("timeAlert");
+let formAlert = document.getElementById("formAlert");
+
+function hideAlert() {
+  alertMassage.style.display = "none";
+};
+
+function showAlert() {
+  alertMassage.style.display = "flex";
+  setTimeout(hideAlert, 3000);
+};
+
+
 //add Event to table on click
-let createEventBtn = document.getElementById("createEventBtn");
-createEventBtn.addEventListener("click", function(e) {
-  e.preventDefault();
-  inputsValidate();
-  if (inputsValid) {
-    createEvent();
-    if (isUniq || isEmpty) {
-      location.href="index.html";
+if (window.location.pathname == "/create.html") {
+  let createEventBtn = document.getElementById("createEventBtn");
+  createEventBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    inputsValidate();
+    if (inputsValid) {
+      createEvent();
+      if (isUniq || isEmpty) {
+        location.href="index.html";
+      }
+    }
+  });
+}
+
+// get click coordinates 
+let cellIndex;
+let rowIndex;
+if (window.location.pathname == "/index.html") {
+  userTable.addEventListener('click', event => { 
+    if (event.target.classList.contains('closeBtn')) { 
+      cellIndex = event.target.closest('td').cellIndex;
+      rowIndex = event.target.closest('tr').rowIndex;
+      openModal();
+    }
+  });
+  let deleteBtnPopUp = document.getElementById("deleteBtnPopUp");
+  deleteBtnPopUp.addEventListener("click", function() {
+    removeEvent(rowIndex, cellIndex);
+  });
+}
+// delete event function
+function removeEvent(rowIndex, cellIndex) {
+  function isDeleted(elem) {
+    if (rowIndex == elem.time && cellIndex == elem.day) {
+      return false;
+    } else {
+      return true;
     }
   }
-});
+  let newStorageEvents = storageEvents.filter(isDeleted);
+  localStorage.setItem('allEvents', JSON.stringify(newStorageEvents));
+  window.location.reload();
+};
+
+function openModal() {
+  let overlay = document.getElementById('popup-wrapp');
+  overlay.setAttribute("style", "visibility: visible; opacity: 1;");
+}
+
+function closeModal() {
+  let overlay = document.getElementById('popup-wrapp');
+  overlay.setAttribute("style", "visibility: hiden; opacity: 0;");
+}
 

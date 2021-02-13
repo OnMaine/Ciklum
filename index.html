@@ -13,11 +13,11 @@
 <body>
   <div class="container">
     <div class="row d-flex justify-content-between align-items-center py-2">
-      <div class="col-2">
+      <div class="col-12 col-md-2">
         <h1 class="font-weight-bold">Calendar</h1>
       </div>
-      <div class="col-6 d-flex flex-row justify-content-end">
-        <div class="members col-6">
+      <div class="col-12 col-md-6 d-flex flex-column flex-column-reverse flex-md-row justify-content-end">
+        <div class="members col-12 col-md-6 pt-3 pt-md-0">
           <select class="form-control" id="membersFilters" onchange="getMembersFilter();">
             <option value="all">All members</option>
             <option value="Mark">Mark</option>
@@ -26,12 +26,12 @@
             <option value="Jastin">Jastin</option>
           </select>
         </div>
-        <div class="newEvent col-6"><button type="button" class="btn btn-primary w-100" onClick='location.href="create.html"'>New Event +</button></div>
+        <div class="newEvent col-12 col-md-6"><button type="button" class="btn btn-primary w-100" onClick='location.href="create.html"'>New Event +</button></div>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <!-- <table class="table table-bordered">
+        <table id="table" class="table table-bordered">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Name</th>
@@ -116,101 +116,26 @@
               <td></td>
             </tr>
           </tbody>
-        </table> -->
-        <div class="day-box d-flex flex-row w-100">
-          <!-- <div class="d-flex flex-column justify-content-start align-items-center text-white bg-dark pt-1">
-            <div class="time-row">Name</div>
-            <div class="time-row">10:00</div>
-            <div class="time-row">11:00</div>
-            <div class="time-row">12:00</div>
-            <div class="time-row">13:00</div>
-            <div class="time-row">14:00</div>
-            <div class="time-row">15:00</div>
-            <div class="time-row">16:00</div>
-            <div class="time-row">17:00</div>
-            <div class="time-row">18:00</div>
-          </div> -->
-          <div class="d-flex flex-column w-100">
-            <!-- <div class="d-flex text-center text-white bg-dark py-1 w-100">
-                <div class="col">Mon</div>
-                <div class="col">Tue</div>
-                <div class="col">Wed</div>
-                <div class="col">Thu</div>
-                <div class="col">Fri</div>
-            </div> -->
-            <table class="table m-0 table-bordered">
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="popup-wrapp" class="overlay">
+    <div class="popup">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p class="pt-4 text-center font-weight-bold">Are you sure want to delete <span id="EventPopUp"></span> event?</p>
           </div>
+        </div>
+        <div class="row pt-3">
+          <div class="col-6"><button type="button" id="EscBtnPopUp" class="btn btn-outline-danger px-4" onclick="closeModal();">No</button></div>
+          <div class="col-6"><button type="button" id="deleteBtnPopUp" class="btn btn-outline-primary px-4">Yes</button></div>
         </div>
       </div>
     </div>
   </div>
-
+  
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
   <script type="text/javascript" src="js/index.js"></script>
