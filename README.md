@@ -17,4 +17,5 @@ npm start
 
 ```
 npm run build
-`
+
+(build dir)
