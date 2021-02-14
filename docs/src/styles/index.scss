@@ -1,8 +1,11 @@
+@import "~bootstrap/scss/bootstrap";
+
 .selectBox {
   position: relative;
-}
-.selectBox select {
-  font-weight: bold;
+
+  select {
+    font-weight: bold;
+  }
 }
 
 .overSelect {
@@ -16,12 +19,14 @@
 #checkboxes {
   display: none;
   border: 1px #dadada solid;
-}
-#checkboxes label {
-  display: block;
-}
-#checkboxes label:hover {
-  background-color: #1e90ff;
+
+  label {
+    display: block;
+
+    &:hover {
+      background-color: #1e90ff;
+    }
+  }
 }
 
 label input {
@@ -48,7 +53,15 @@ tr td {
   justify-content: space-between;
 }
 
-#alertMassage, #formAlert, #timeAlert {
+#alertMassage {
+  display: none;
+}
+
+#formAlert {
+  display: none;
+}
+
+#timeAlert {
   display: none;
 }
 
@@ -59,9 +72,7 @@ tr td {
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
+  display: none;
 }
 
 .popup {
@@ -70,10 +81,8 @@ tr td {
   margin: 170px auto;
   padding: 10px;
   background: #fff;
-  border: 1px solid #FF2B2B;
+  border: 1px solid #ff2b2b;
   border-radius: 5px;
   transition: all 1s ease-in-out;
   text-align: center;
 }
-
-/*# sourceMappingURL=main.css.map */

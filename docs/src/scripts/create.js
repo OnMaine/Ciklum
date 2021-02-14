@@ -1,3 +1,10 @@
+/* eslint-disable global-require */
+import '../styles/index.scss';
+
+if (process.env.NODE_ENV === 'development') {
+  require('../index.html');
+}
+
 /* eslint-env browser */
 let x = 1;
 let y = 1;
@@ -8,26 +15,36 @@ let storageEvents = [];
 let isUniq = false;
 let expanded = false;
 let isEmpty;
-let filterMember = 'all';
-let filteredEvents = [];
 
+const setDay = document.getElementById('days');
 function getDay() {
-  const select = document.getElementById('days');
-  x = select.options[select.selectedIndex].value;
+  x = setDay.options[setDay.selectedIndex].value;
   return +x;
 }
 
+setDay.addEventListener('change', () => {
+  getDay();
+});
+
+const setTime = document.getElementById('time');
 function getTime() {
-  const select = document.getElementById('time');
-  y = select.options[select.selectedIndex].value;
+  y = setTime.options[setTime.selectedIndex].value;
   return +y;
 }
 
+setTime.addEventListener('change', () => {
+  getTime();
+});
+
+const setName = document.getElementById('eventName');
 function getName() {
-  const select = document.getElementById('eventName');
-  eventName = select.value;
+  eventName = setName.value;
   return eventName;
 }
+
+setName.addEventListener('input', () => {
+  getName();
+});
 
 const alertMassage = document.getElementById('alertMassage');
 const timeAlert = document.getElementById('timeAlert');
@@ -116,56 +133,8 @@ const updateTable = function updateTable() {
 
 window.onload = updateTable;
 
-// update filtered table
-function filteredTable() {
-  function isRightMember(elem) {
-    const eventMembers = elem.members;
-    const checked = eventMembers.some((member) => {
-      if (member === filterMember) {
-        return true;
-      }
-      return false;
-    });
-    if (checked) {
-      filteredEvents.push(elem);
-    }
-  }
-  storageEvents.filter(isRightMember);
-  for (let i = 1; i < userTable.rows.length; i += 1) {
-    for (let j = 1; j < userTable.rows[i].cells.length; j += 1) {
-      const tableEvent = userTable.rows[i].cells[j];
-      tableEvent.removeAttribute('id');
-      userTable.rows[i].cells[j].innerHTML = '';
-      filteredEvents.forEach((event) => {
-        if (i === event.time && j === event.day) {
-          tableEvent.id = 'tableEvent';
-          const content = `<div class="events">
-          <div class="eventName"> ${event.eventName} </div>
-          <button id="closeBtn" type="button" class="close closeBtn" aria-label="Close">
-          <span aria-hidden="true" class="close closeBtn">&times;</span>
-          </button>
-         </div>`;
-          userTable.rows[i].cells[j].innerHTML = content;
-        }
-      });
-    }
-  }
-}
-
-// get select filter value
-function getMembersFilter() {
-  const select = document.getElementById('membersFilters');
-  filterMember = select.options[select.selectedIndex].value;
-  filteredEvents = [];
-  if (filterMember === 'all') {
-    updateTable();
-  } else {
-    filteredTable();
-  }
-  return filterMember;
-}
-
 // checkbox multiselect
+const selectBox = document.getElementById('selectBox');
 function showCheckboxes() {
   const checkboxes = document.getElementById('checkboxes');
   if (!expanded) {
@@ -177,11 +146,15 @@ function showCheckboxes() {
   }
 }
 
+selectBox.addEventListener('click', () => {
+  showCheckboxes();
+});
+
 // selectAll btn func
 function toggle(source) {
-  const checkboxes = document.getElementsByClassName('checkbox');
-  for (let i = 0, n = checkboxes.length; i < n; i += 1) {
-    checkboxes[i].checked = source.checked;
+  const Allcheckboxes = document.getElementsByClassName('checkbox');
+  for (let i = 0, n = Allcheckboxes.length; i < n; i += 1) {
+    Allcheckboxes[i].checked = source.checked;
   }
 }
 
@@ -195,12 +168,10 @@ check.forEach((items) => {
 
 // listener for selectAll
 const btnCheckAll = document.getElementById('allChecked');
-if (window.location.pathname === '/Ciklum/create.html') {
-  btnCheckAll.addEventListener('click', () => {
-    toggle(btnCheckAll);
-    getCheckedCheckBoxes();
-  });
-}
+btnCheckAll.addEventListener('click', () => {
+  toggle(btnCheckAll);
+  getCheckedCheckBoxes();
+});
 
 // validate checkboxes
 let inputsValid = false;
@@ -219,57 +190,14 @@ function inputsValidate() {
 }
 
 // add Event to table on click
-if (window.location.pathname === '/Ciklum/create.html') {
-  const createEventBtn = document.getElementById('createEventBtn');
-  createEventBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    inputsValidate();
-    if (inputsValid) {
-      createEvent();
-      if (isUniq || isEmpty) {
-        window.location.href = 'index.html';
-      }
+const createEventBtn = document.getElementById('createEventBtn');
+createEventBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  inputsValidate();
+  if (inputsValid) {
+    createEvent();
+    if (isUniq || isEmpty) {
+      window.location.href = 'index.html';
     }
-  });
-}
-
-// get click coordinates
-let cellIndex;
-let rowIndex;
-
-function openModal() {
-  const overlay = document.getElementById('popup-wrapp');
-  overlay.setAttribute('style', 'visibility: visible; opacity: 1;');
-}
-
-// delete event function
-function removeEvent() {
-  function isDeleted(elem) {
-    if (rowIndex === elem.time && cellIndex === elem.day) {
-      return false;
-    }
-    return true;
   }
-  const newStorageEvents = storageEvents.filter(isDeleted);
-  localStorage.setItem('allEvents', JSON.stringify(newStorageEvents));
-  window.location.reload();
-}
-
-if (window.location.pathname === '/Ciklum/index.html') {
-  userTable.addEventListener('click', (event) => {
-    if (event.target.classList.contains('closeBtn')) {
-      cellIndex = event.target.closest('td').cellIndex;
-      rowIndex = event.target.closest('tr').rowIndex;
-      openModal();
-    }
-  });
-  const deleteBtnPopUp = document.getElementById('deleteBtnPopUp');
-  deleteBtnPopUp.addEventListener('click', () => {
-    removeEvent(rowIndex, cellIndex);
-  });
-}
-
-function closeModal() {
-  const overlay = document.getElementById('popup-wrapp');
-  overlay.setAttribute('style', 'visibility: hiden; opacity: 0;');
-}
+});
