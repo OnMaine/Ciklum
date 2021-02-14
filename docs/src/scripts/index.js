@@ -130,7 +130,7 @@ function closeModal() {
   overlay.style.display = 'none';
 }
 
-const EscBtnPopUp = document.getElementById('EscBtnPopUp');
-EscBtnPopUp.addEventListener('click', () => {
+const escBtnPopUp = document.getElementById('escBtnPopUp');
+escBtnPopUp.addEventListener('click', () => {
   closeModal();
 });
