@@ -194,7 +194,7 @@ check.forEach((items) => {
 
 // listener for selectAll
 const btnCheckAll = document.getElementById('allChecked');
-if (window.location.pathname === '/create.html') {
+if (window.location.pathname === '/Ciklum/create.html') {
   btnCheckAll.addEventListener('click', () => {
     toggle(btnCheckAll);
     getCheckedCheckBoxes();
@@ -218,7 +218,7 @@ function inputsValidate() {
 }
 
 // add Event to table on click
-if (window.location.pathname === '/create.html') {
+if (window.location.pathname === '/Ciklum/create.html') {
   const createEventBtn = document.getElementById('createEventBtn');
   createEventBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -254,7 +254,7 @@ function removeEvent() {
   window.location.reload();
 }
 
-if (window.location.pathname === '/index.html') {
+if (window.location.pathname === '/Ciklum/index.html') {
   userTable.addEventListener('click', (event) => {
     if (event.target.classList.contains('closeBtn')) {
       cellIndex = event.target.closest('td').cellIndex;
